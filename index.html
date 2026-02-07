@@ -3,63 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valentine's Day Page</title>
+    <title>Valentine's Question</title>
     <style>
         body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #fff;
+            background: linear-gradient(to right, #ff76a0, #ff8f92);
+            text-align: center;
+            overflow: hidden;
+            animation: fadeIn 1s;
         }
-        #no-button {
-            padding: 20px;
-            font-size: 24px;
-            background-color: red;
-            color: white;
-            border: none;
-            border-radius: 5px;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .confetti {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: none;
+        }
+        .hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: none;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 20px;
             cursor: pointer;
-            position: relative;
-            animation: jump 0.5s infinite;
+            transition: transform 0.2s;
         }
-        @keyframes jump {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-        #begging-gif {
-            display: none;
-        }
-        #celebratory-gif {
-            display: none;
+        button:hover {
+            transform: translateY(-10px);
+            transition: all 0.2s ease-in-out;
         }
     </style>
 </head>
 <body>
-    <h1>Will you be my Valentine?</h1>
-    <button id="no-button">No</button>
-    <img id="begging-gif" src="puppy-eyed-begging.gif" alt="Puppy begging">
-    <img id="celebratory-gif" src="celebration.gif" alt="Celebration">
+    <div id="question">
+        <h1>Will you be my Valentine?</h1>
+        <img id="puppy-gif" src="https://tenor.com/upJMamM853r.gif" style="display: block; margin: 20px auto;" />
+        <button id="yes-btn">Yes</button>
+        <button id="no-btn">No</button>
+    </div>
+    
+    <div class="confetti" id="confetti"></div>
+    <div class="hearts" id="hearts"></div>
 
     <script>
-        const noButton = document.getElementById('no-button');
-        const beggingGif = document.getElementById('begging-gif');
-        const celebratoryGif = document.getElementById('celebratory-gif');
+        document.getElementById('yes-btn').onclick = function () {
+            document.getElementById('question').innerHTML = '<img src="https://tenor.com/fI4EUb1GIUh.gif" style="display: block; margin: 20px auto;" />';
+            // Trigger confetti and hearts
+            document.getElementById('confetti').style.display = 'block';
+            document.getElementById('hearts').style.display = 'block';
+            // Add confetti logic here
+        };
 
-        noButton.addEventListener('mouseover', () => {
-            noButton.style.transform = 'translate(' + (Math.random() * 50 - 25) + 'px,' + (Math.random() * 50 - 25) + 'px)';
-        });
-
-        noButton.addEventListener('click', () => {
-            noButton.style.display = 'none';
-            beggingGif.style.display = 'block';
-        });
-
-        beggingGif.addEventListener('click', () => {
-            beggingGif.style.display = 'none';
-            celebratoryGif.style.display = 'block';
-        });
-    </script>
+        document.getElementById('no-btn').onmouseover = function () {
+            this.style.transform = 'translate(10px, -10px)';
+            // Logic to make the button jump away
+        };
+    <\/script>
 </body>
 </html>
