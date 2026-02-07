@@ -7,69 +7,74 @@
     <style>
         body {
             text-align: center;
-            background-color: #ffcccb;
-            font-family: 'Arial', sans-serif;
+            background-image: url('https://media.tenor.com/upJMamM853r.gif');
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            font-size: 24px;
         }
-        img {
-            max-width: 500px;
-            height: auto;
+        .button {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 10px;
+            cursor: pointer;
         }
         .no-button {
-            padding: 10px 20px;
-            margin: 10px;
-            cursor: pointer;
-            background-color: #f44336; /* Red */
-            color: white;
-            border: none;
-            border-radius: 5px;
+            background-color: red;
         }
         .yes-button {
-            padding: 10px 20px;
-            margin: 10px;
-            cursor: pointer;
-            background-color: #4CAF50; /* Green */
-            color: white;
-            border: none;
-            border-radius: 5px;
+            background-color: green;
         }
-        .no-button:hover {
-            position: relative;
-            animation: jump 0.5s;
-        }
-        @keyframes jump {
-            0%, 100% { top: 0; }
-            50% { top: -20px; }
-        }
-        #celebration {
-            display: none;
+
+        /* Confetti animation style */
+        .confetti {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
     <h1>Happy Valentine's Day!</h1>
-    <img src="path_to_begging_puppy.gif" alt="Begging Puppy">
-    <img src="path_to_celebratory_gif.gif" alt="Celebration Gif" style="display:none;">
-    
-    <div>
-        <button class="no-button" onmouseover="this.style.transform='translateY(-10px)';">No</button>
-        <button class="yes-button" onclick="celebrate()">Yes</button>
-    </div>
-    
-    <div id="celebration">
-        <img src="path_to_celebratory_gif.gif" alt="Celebration Gif">
-        <canvas id="confettiCanvas"></canvas>
-    </div>
-    
-    <script>
-        function celebrate() {
-            document.getElementById('celebration').style.display = 'block';
-            // Trigger confetti effect here
-            startConfetti();
-        }
+    <img src="https://media.tenor.com/fI4EUb1GIUh.gif" alt="Celebration GIF" style="width: 50%;">
+    <br>
+    <button class="button no-button">No</button>
+    <button class="button yes-button" onclick="celebrate()">Yes</button>
+    <div class="confetti" id="confetti"></div>
 
-        function startConfetti() {
-            // Placeholder for the confetti functionality
-            console.log("Confetti started!"); // Replace with actual confetti logic
+    <script>
+        const noButton = document.querySelector('.no-button');
+        noButton.addEventListener('mouseover', () => {
+            const randomOffset = Math.random() * 20;
+            noButton.style.transform = `translate(${randomOffset}px, ${randomOffset}px)`;
+        });
+
+        function celebrate() {
+            const confettiDiv = document.getElementById('confetti');
+            for(let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'absolute';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                confetti.style.opacity = '0.8';
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.top = `${Math.random() * 100}vh`;
+                confettiDiv.appendChild(confetti);
+
+                // Animation effect
+                confetti.animate([{transform: 'translateY(0)'},{transform: 'translateY(100vh)'}], {
+                    duration: 2000,
+                    fill: 'forwards'
+                });
+            }
         }
     </script>
 </body>
