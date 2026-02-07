@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valentine's Page</title>
+    <title>Valentine's Day</title>
     <style>
         body {
             display: flex;
@@ -11,114 +11,91 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
-            background-color: #ffe6e6;
+            background-color: #f8d7da;
+            color: #721c24;
             font-family: Arial, sans-serif;
-            overflow: hidden;
         }
-        h1 {
-            color: #ff4d4d;
-            margin-bottom: 20px;
+        .hidden {
+            display: none;
         }
-        #puppy {
-            width: 300px;
-            margin-bottom: 20px;
-        }
-        #buttons {
-            display: flex;
-            gap: 20px;
-        }
-        .button {
-            padding: 15px 30px;
-            background-color: #ff4d4d;
+        #no-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #dc3545;
             color: white;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: background-color 0.3s;
+            font-size: 16px;
         }
-        .button:hover {
-            background-color: #ff9999;
+        #yes-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
         }
-        .no-button {
-            animation: jump 0.5s infinite;
-        }
-        @keyframes jump {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        .celebration {
-            display: none;
+        .confetti {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 10;
-        }
-        .hearts {
-            position: absolute;
+            pointer-events: none;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-        }
-        @keyframes float {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(-100vh); }
-        }
-        .heart {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background-color: red;
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            animation: float 5s infinite;
         }
     </style>
 </head>
 <body>
-    <h1>Will you be my Valentine?</h1>
-    <img id="puppy" src="https://media.tenor.com/upJMamM853r.gif" alt="Puppy">
-    <div id="buttons">
-        <button class="button no-button">No</button>
-        <button class="button yes-button">Yes</button>
-    </div>
-    <img class="celebration" src="https://media.tenor.com/fI4EUb1GIUh.gif" alt="Celebration">
-    <div class="hearts"></div>
-
+    <h1>Happy Valentine's Day!</h1>
+    <img src="https://media.tenor.com/upJMamM853r.gif" alt="Begging Puppy" />
+    <button id="yes-button">Yes</button>
+    <button id="no-button">No</button>
+    <canvas class="confetti hidden"></canvas>
+    
     <script>
-        const noButton = document.querySelector('.no-button');
-        const yesButton = document.querySelector('.yes-button');
-        const celebration = document.querySelector('.celebration');
-        const heartsContainer = document.querySelector('.hearts');
-
-        noButton.addEventListener('mouseenter', () => {
-            noButton.style.transform = `translate(${Math.random() * 20 - 10}px, ${Math.random() * 20 - 10}px)`;
+        document.getElementById('yes-button').addEventListener('click', function() {
+            alert('Celebration!');
+            window.location.reload(); // Simulate celebration
         });
 
-        yesButton.addEventListener('click', () => {
-            celebration.style.display = 'block';
-            startFloatingHearts();
-        });
+        document.getElementById('no-button').addEventListener('click', function() {
+            const confettiCanvas = document.querySelector('.confetti');
+            confettiCanvas.classList.remove('hidden');
+            const ctx = confettiCanvas.getContext('2d');
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
 
-        function startFloatingHearts() {
-            for (let i = 0; i < 10; i++) {
-                createHeart();
+            // Confetti effect
+            const particles = [];
+            for (let i = 0; i < 100; i++) {
+                particles.push({
+                    x: Math.random() * confettiCanvas.width,
+                    y: Math.random() * confettiCanvas.height,
+                    radius: Math.random() * 5 + 2,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                    speed: Math.random() * 5 + 2,
+                    rotation: Math.random() * 360
+                });
             }
-        }
 
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.className = 'heart';
-            heart.style.left = `${Math.random() * 100}vw`;
-            heart.style.animationDuration = `${Math.random() * 3 + 2}s`;
-            heartsContainer.appendChild(heart);
-            setTimeout(() => {
-                heart.remove();
-            }, 5000);
-        }
+            function animate() {
+                ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                particles.forEach((particle, index) => {
+                    ctx.beginPath();
+                    ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = particle.color;
+                    ctx.fill();
+                    particle.y -= particle.speed;
+                    if (particle.y < 0) {
+                        particles.splice(index, 1);
+                    }
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
+            alert('No clicked! Running away dramatically!'); // Alert message
+        });
     </script>
 </body>
 </html>
